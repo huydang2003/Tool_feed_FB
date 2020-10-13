@@ -1,0 +1,52 @@
+{
+    "id": "100006427775175",
+    "birthday": "01/01/1987",
+    "education": [
+        {
+            "school": {
+                "id": "103789649659423",
+                "name": "Hanoi – Amsterdam High School"
+            },
+            "type": "High School",
+            "id": "3433808156843410"
+        },
+        {
+            "school": {
+                "id": "201864396641987",
+                "name": "Đại Học Khoa Học và Công Nghệ Hà Nội - USTH"
+            },
+            "type": "College",
+            "id": "3433808196843406"
+        }
+    ],
+    "email": "phuoc_giau@yahoo.com",
+    "first_name": "Phuoc",
+    "gender": "male",
+    "hometown": {
+        "id": "106388046062960",
+        "name": "Hà Nội"
+    },
+    "last_name": "Giau",
+    "link": "https://www.facebook.com/profile.php?id=100006427775175",
+    "location": {
+        "id": "106388046062960",
+        "name": "Hà Nội"
+    },
+    "locale": "vi_VN",
+    "name": "Phuoc Giau",
+    "published_timeline": true,
+    "timezone": 7,
+    "updated_time": "2020-10-07T06:30:16+0000",
+    "verified": true,
+    "work": [
+        {
+            "end_date": "0000-00",
+            "employer": {
+                "id": "106388046062960",
+                "name": "Hà Nội"
+            },
+            "start_date": "0000-00",
+            "id": "3433808246843401"
+        }
+    ]
+}
