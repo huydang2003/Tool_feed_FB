@@ -367,6 +367,7 @@ if __name__ == '__main__':
 	input('Thêm thông tin vào thư mục "input"!!!')
 	tool = FB_tool()
 	tool.get_list_fb_id()
+	cout = 0
 	for fb_id in tool.list_fb_id:
 		tool.check_cookie(fb_id)
 		tool.show_info(fb_id)
@@ -375,7 +376,8 @@ if __name__ == '__main__':
 		auto_send_friend_suggest(tool, fb_id)		
 		auto_accept_friend_request(tool, fb_id)
 		print('\nHoàn thành 1 của nợ!!!\n')
-
+		cout+=1
+		if cout>=len(tool.list_fb_id): break
 		s = random.randint(30,45)
 		print(f'Chuyển FB sau {s}s..\n')
 		sleep(s)
