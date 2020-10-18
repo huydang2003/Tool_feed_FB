@@ -78,14 +78,14 @@ class FB_tool(object):
 		path_data = f'data/{data["name"]}_{data["id"]}'
 		if not os.path.exists(path_data): 
 			os.mkdir(path_data)
-			path_output = f'{path_data}/info.json'
-			self.save_file_json(path_output, data)
-			url = 'https://graph.facebook.com/me?fields=friends'
-			res = self.ses.get(url, params=params)
-			data = res.json()
-			data = data['friends']['data']
-			path_output = f'{path_data}/list_friend.json'
-			self.save_file_json(path_output, data)
+		path_output = f'{path_data}/info.json'
+		self.save_file_json(path_output, data)
+		url = 'https://graph.facebook.com/me?fields=friends'
+		res = self.ses.get(url, params=params)
+		data = res.json()
+		data = data['friends']['data']
+		path_output = f'{path_data}/list_friend.json'
+		self.save_file_json(path_output, data)
 
 	def show_info(self, fb_id):
 		list_folder = os.listdir('data')
@@ -127,9 +127,8 @@ class FB_tool(object):
 		return data
 
 # Lay danh sach loi moi ket ban
-	def get_list_friend_request(self, fb_id):
+	def get_list_friend_request(self, cookie):
 		list_friend_request = {}
-		cookie = self.input[fb_id]['cookie']
 		headers = self.get_headers(cookie)
 		res = self.ses.get('https://mbasic.facebook.com/friends/center/requests', headers=headers)
 		soup = BeautifulSoup(res.content, 'html.parser')
@@ -146,7 +145,7 @@ class FB_tool(object):
 		return list_friend_request
 
 # Lay danh sach ban	goi y
-	def get_list_friend_suggest(self, cookie, fb_id):
+	def get_list_friend_suggest(self, cookie):
 		list_friend_suggest = {}
 		headers = self.get_headers(cookie)
 		res = self.ses.get('https://mbasic.facebook.com/friends/center/suggestions', headers=headers)
@@ -169,8 +168,10 @@ class FB_tool(object):
 		headers=self.get_headers(cookie)
 		res = self.ses.get(link, headers=headers)
 		soup = BeautifulSoup(res.content, 'html.parser')
-		soup = soup.find(id='m_newsfeed_stream')
-		list_span = soup.find_all('span')
+		main = soup.find(id='m_newsfeed_stream')
+		if main==None: main = soup.find(id='structured_composer_async_container')
+		list_span = main.find_all('span')
+		if list_span==[]: return list_story
 		for span in list_span:
 			temp = str(span.get('id'))
 			if 'like' in temp:
@@ -245,15 +246,15 @@ class FB_tool(object):
 		if 'post_id' in res.json(): check = True
 		return check
 
-	def friend_request(self, cookie, fb_id, link):
+	def friend_request(self, cookie, link):
 		headers = self.get_headers(cookie)
 		self.ses.get(link, headers=headers)
 
-def auto_comment_reaction(tool):
+def auto_comment_reaction(tool, fb_id):
 	list_reaction = ['LOVE','TUTU','HAHA','WOW']
 	data = open('input/list_cmt.txt', 'r', encoding='utf8').read()
 	list_cmt = data.split('|')
-	sl = random.randint(7, 15)
+	sl = random.randint(7, 10)
 	print(f'\n[Tự động tương tác với {sl} người]')
 	cout = 0
 	list_story = []
@@ -268,6 +269,7 @@ def auto_comment_reaction(tool):
 			list_story = tool.get_list_story(cookie, link)
 		for id_status in list_story:
 			if id_status in list_story_old: continue
+			list_story_old.append(id_status)
 			info = tool.get_info_story(token, id_status)
 			name = info[0]
 			caption = info[1]
@@ -278,23 +280,17 @@ def auto_comment_reaction(tool):
 				if x==1:
 					check = tool.reaction_story(cookie, token, id_status, reaction)
 					if check==1: print(f'\t>>>reaction: {reaction}')
-					if check==2:
-						print('\t>>>Block reaction!!!')
-						# list_tt.remove(x)
-						break
+					if check==2: print('\t>>>Block reaction!!!')
 				if x==2:
 					check = tool.comment_story(token, id_status, content)
 					if check==1: print(f'\t>>>comment: {content}')
-					if check==2:
-						print('\t>>>Block comment!!!')
-						# list_tt.remove(x)
-						break
+					if check==2: print('\t>>>Block comment!!!')
 				cout+=1
 			s = random.randint(5, 10)
-			print(f'[wait {s}s]')
+			print(f'\t[wait {s}s]')
 			sleep(s)
 
-def auto_post_photos(tool):
+def auto_post_photos(tool, fb_id):
 	print('\n[Tự động đăng bài viết]')
 	token = tool.list_ct[fb_id]['token']
 	data = open('input/list_cap.txt', 'r', encoding='utf8').read()
@@ -308,7 +304,7 @@ def auto_post_photos(tool):
 def auto_send_friend_suggest(tool, fb_id):
 	print('\n[Tự động gửi lời mời kết bạn]')
 	cookie = tool.list_ct[fb_id]['cookie']
-	list_friend_suggest = tool.get_list_friend_suggest(cookie, fb_id)
+	list_friend_suggest = tool.get_list_friend_suggest(cookie)
 	if list_friend_suggest=={}:
 		print('[Không có bạn bè gợi ý !!!]')
 	else:
@@ -317,13 +313,50 @@ def auto_send_friend_suggest(tool, fb_id):
 		cout = 1
 		for id_friend in list_friend_suggest:
 			link = list_friend_suggest[id_friend]
-			tool.friend_request(cookie, fb_id, link)
+			tool.friend_request(cookie, link)
 			print(f'\t>>>{cout}>>send: {id_friend}', end=' ')
 			cout+=1
 			if cout > sl: break
 			s = random.randint(1,5)
-			print(f'>>delay {s}s')
+			print(f'\t[wait {s}s]')
 			sleep(s)
+
+def auto_accept_friend_request(tool, fb_id):
+	print('\n[Tự động chấp nhận lời mời kết bạn]')
+	list_reaction = ['LOVE','TUTU','HAHA','WOW']
+	token = tool.list_ct[fb_id]['token']
+	cookie = tool.list_ct[fb_id]['cookie']
+	list_friend_request = tool.get_list_friend_request(cookie)
+	if list_friend_request=={}:
+		print('Không có lời mời kết bạn!!!')
+	else:
+		print(f'>>>>>Tìm thấy {len(list_friend_request)} lời mời!!!')
+		print('Bắt đầu chấp nhận và tương tác:')
+		max_story = random.randint(2,5)
+		for id_friend in list_friend_request:
+			link = list_friend_request[id_friend]
+			tool.friend_request(cookie, link)
+			print(f'+++>>>accept ID: {id_friend}')
+			link = f'https://mbasic.facebook.com/profile.php?id={id_friend}'
+			list_story = tool.get_list_story(cookie, link)
+			print(f'\t[Tìm thấy {len(list_story)} bài viết!!!]')
+			temp = len(list_story)//2
+			cout = 0
+			max_tt = random.randint(0,temp)
+			for id_status in list_story:
+				info = tool.get_info_story(token, id_status)
+				name = info[0]
+				caption = info[1]
+				print(f'\t>>>bài viết:{name}|{caption}')
+				reaction = random.choice(list_reaction)
+				check = tool.reaction_story(cookie, token, id_status, reaction)
+				if check==1: print(f'\t\t>>>reaction: {reaction}')
+				if check==2: print('\t\t>>>Block reaction!!!')
+				cout+=1
+				if cout>=max_tt: break
+				s = random.randint(1,5)
+				print(f'\t[wait {s}s]')
+				sleep(s)
 
 if __name__ == '__main__':
 	if not os.path.exists('data'): os.mkdir('data')
@@ -337,14 +370,13 @@ if __name__ == '__main__':
 	for fb_id in tool.list_fb_id:
 		tool.check_cookie(fb_id)
 		tool.show_info(fb_id)
-		list_tt = [1, 2, 3, 4]
-		random.shuffle(list_tt)
-		for x in list_tt:
-			if x==1: auto_comment_reaction(tool)
-			if x==2: auto_post_photos(tool)
-			if x==3: auto_send_friend_suggest(tool, fb_id)		
+		auto_comment_reaction(tool, fb_id)
+		auto_post_photos(tool, fb_id)
+		auto_send_friend_suggest(tool, fb_id)		
+		auto_accept_friend_request(tool, fb_id)
 		print('\nHoàn thành 1 của nợ!!!\n')
+
 		s = random.randint(30,45)
-		print(f'\nChuyển FB sau {s}s..\n')
+		print(f'Chuyển FB sau {s}s..\n')
 		sleep(s)
 	print('Xong')
