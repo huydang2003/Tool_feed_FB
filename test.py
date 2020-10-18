@@ -44,7 +44,7 @@ for albums in list_albums:
 		id_albums = albums['id']
 		# print(id_albums)
 		break
-print(data['albums']['data'])
+# print(data['albums']['data'])
 url = f'https://graph.facebook.com/{id_albums}/photos'
 payload = {'message': message, 'url':'https://source.unsplash.com/random'}
 res = requests.post(url, data=payload, params=params)

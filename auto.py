@@ -146,9 +146,8 @@ class FB_tool(object):
 		return list_friend_request
 
 # Lay danh sach ban	goi y
-	def get_list_friend_suggest(self, fb_id):
+	def get_list_friend_suggest(self, cookie, fb_id):
 		list_friend_suggest = {}
-		cookie = self.input[fb_id]['cookie']
 		headers = self.get_headers(cookie)
 		res = self.ses.get('https://mbasic.facebook.com/friends/center/suggestions', headers=headers)
 		soup = BeautifulSoup(res.content, 'html.parser')
@@ -309,7 +308,7 @@ def auto_post_photos(tool):
 def auto_send_friend_suggest(tool, fb_id):
 	print('\n[Tự động gửi lời mời kết bạn]')
 	cookie = tool.list_ct[fb_id]['cookie']
-	list_friend_suggest = tool.get_list_friend_suggest(fb_id)
+	list_friend_suggest = tool.get_list_friend_suggest(cookie, fb_id)
 	if list_friend_suggest=={}:
 		print('[Không có bạn bè gợi ý !!!]')
 	else:
@@ -340,8 +339,8 @@ if __name__ == '__main__':
 		list_tt = [1, 2, 3, 4]
 		random.shuffle(list_tt)
 		for x in list_tt:
-			if x==1: auto_comment_reaction(tool)
-			if x==2: auto_post_photos(tool)
+			# if x==1: auto_comment_reaction(tool)
+			# if x==2: auto_post_photos(tool)
 			if x==3: auto_send_friend_suggest(tool, fb_id)		
 		print('\nHoàn thành 1 của nợ!!!\n')
 		s = random.randint(30,45)
