@@ -116,6 +116,7 @@ class FB_tool(object):
 			print('<=============================>')
 			print('>>>No have information!!!')
 			print('<=============================>')
+
 	def save_file_json(self, path_input, data):
 		f = open(path_input, 'w', encoding='utf8')
 		json.dump(data, f, ensure_ascii=False, indent=4)
@@ -225,6 +226,43 @@ class FB_tool(object):
 					list_story[cout] = temp
 					cout+=1
 		return list_story
+		
+# Lay link bao mang
+	def get_link(self):
+		list_link = []
+		list_link_web = [
+			'https://news.zing.vn',
+			'https://vnexpress.net',
+			'https://www.24h.com.vn',
+			'http://vietnamnet.vn',
+			'https://tuoitre.vn',
+			'http://kenh14.vn',
+			'https://www.dkn.tv',
+			'http://www.doisongphapluat.com',
+			'http://dantri.com.vn',
+			'https://thanhnien.vn'
+		]
+		link_web = random.choice(list_link_web)
+		for link_web in list_link_web:
+			res = self.ses.get(link_web)
+			soup = BeautifulSoup(res.content, 'html.parser')
+			list_a = soup.body.find_all('a')
+			list_a = list_a[1:]
+			cout = 0
+			for a in list_a:
+				if cout > 4: break
+				title = a.text
+				if len(title) > 50:
+					url = a.get('href')
+					if 'javascript' in url: continue
+					if len(url) < 25: continue
+					if 'https' not in url:
+						url = link_web + url
+					list_link.append(url)
+					cout+=1
+		f = open('input/list_link.json', 'w', encoding='utf8')
+		json.dump(list_link, f, indent=4)
+		f.close()
 
 # comment bai viet
 	def comment_story(self, fb_id, link, content):
@@ -257,8 +295,25 @@ class FB_tool(object):
 				check = True
 				break
 		if check == True:
-			link = 'https://mbasic.facebook.com' + url
-			self.ses.post(link, data=payload, headers=headers)
+			url = 'https://mbasic.facebook.com' + url
+			self.ses.post(url, data=payload, headers=headers)
+
+			res = self.ses.get(link, headers=headers)
+			# soup = BeautifulSoup(res.content, 'html.parser')
+			# soup = soup.body.find(id="root")
+			# list_h3 = soup.find_all('h3')
+			# if list_h3 == []: return check
+			# for h3 in list_h3:
+			# 	a = h3.find_all('a')
+			# 	if a == []: continue
+			# 	url = a[0].get('href')
+			# 	if self.fb_info[fb_id]['username'] in url:
+			# 		return check
+
+
+			f = open('html.html', 'w', encoding='utf8')
+			f.write(res.text)
+			f.close()
 		return check
 
 # bay to cam bai viet
@@ -296,7 +351,7 @@ def auto_reaction_and_comment(tool, fb_id):
 	if data=='': list_cmt = ['tương tác tốt :)']
 	else: list_cmt = data.split('|')
 
-	sl = random.randint(5, 10)
+	sl = random.randint(1, 1)
 	print(f'Bình luận và bày tỏ cảm súc bài viết tới {sl} người!!!')
 	cout = 1
 	while True:
@@ -314,7 +369,7 @@ def auto_reaction_and_comment(tool, fb_id):
 				if check == True: print('<|reaction:', reaction)
 				else: print('<|reaction:', check)
 			if cmt_link != '':
-				content = random.choice(list_cmt)
+				content = f'#bot_comment #{cout} {random.choice(list_cmt)}'
 				check = tool.comment_story(fb_id, cmt_link, content)
 				print('\t', end='')
 				if check == True: print('<|comment:', content)
@@ -328,12 +383,10 @@ def auto_reaction_and_comment(tool, fb_id):
 
 # Auto dang bai viet
 def auto_post_link(tool, fb_id):
-	f = open('input/list_link.txt', 'r', encoding='utf8')
-	data = f.read()
+	f = open('input/list_link.json', 'r')
+	list_link = json.load(f)
 	f.close()
-	if data == '': list_link = []
-	else: list_link = data.split('\n')
-
+	
 	sl = random.randint(1,3)
 	print(f'Tự động đăng {sl} bài viết!!!')
 	cout = 1
@@ -391,7 +444,7 @@ def auto_accept_friend_request(tool, fb_id):
 			title = list_story[stt]['title']
 			reaction_link = list_story[stt]['reaction_link']
 			cmt_link = list_story[stt]['cmt_link']
-			print(' +>', stt ,'>>|bài viết:',title)
+			print('+>', stt ,'>>|bài viết:',title)
 			if reaction_link != '':
 				list_reactions = ['LIKE', 'LOVE', 'TUTU', 'HAHA', 'WOW']
 				reaction = random.choice(list_reactions)
@@ -400,7 +453,7 @@ def auto_accept_friend_request(tool, fb_id):
 				if check == True: print('<|reaction:', reaction)
 				else: print('<|reaction:', check)
 			cout += 1
-			if stt > max_story: return True
+			if cout > max_story: return True
 			s = random.randint(1,3)
 			print(f'>>delay {s}s')
 			sleep(s)
@@ -411,11 +464,10 @@ if __name__ == '__main__':
 	if not os.path.exists('input'): os.mkdir('input')
 	if not os.path.exists('cookie.txt'): open('cookie.txt', 'w').close()
 	if not os.path.exists('input/list_cmt.txt'): open('input/list_cmt.txt', 'w').close()
-	if not os.path.exists('input/list_link.txt'): open('input/list_link.txt', 'w').close()
 	tool = FB_tool()
-	list_fb_id = tool.get_list_fb_id()
-	fb_id = '100006427775175'
-	for fb_id in list_fb_id:
+	# tool.get_link()
+	tool.get_list_fb_id()
+	for fb_id in tool.list_fb_id:
 		tool.check_cookie(fb_id)
 		tool.show_info(fb_id)
 		print(tool.list_fb_id)
@@ -425,16 +477,17 @@ if __name__ == '__main__':
 			if x==1:
 				check = auto_reaction_and_comment(tool, fb_id)
 				if check == True: print('\n><><><Tự động comment => xong!!!\n')
-			if x==2:
-				check = auto_send_friend_suggest(tool, fb_id)
-				if check == True: print('\n><><><Tự động gửi kết bạn => xong!!!\n')
-			if x==3:
-				check = auto_post_link(tool, fb_id)
-				if check == True: print('\n><><><Tự động đăng bài => xong!!!\n')
-			if x==4:
-				check = auto_accept_friend_request(tool, fb_id)
-				if check == True: print('\n><><><Tự động chấp nhận bạn bè => xong!!!\n')
+			# if x==2:
+			# 	check = auto_send_friend_suggest(tool, fb_id)
+			# 	if check == True: print('\n><><><Tự động gửi kết bạn => xong!!!\n')
+			# if x==3:
+			# 	check = auto_post_link(tool, fb_id)
+			# 	if check == True: print('\n><><><Tự động đăng bài => xong!!!\n')
+			# if x==4:
+			# 	check = auto_accept_friend_request(tool, fb_id)
+			# 	if check == True: print('\n><><><Tự động chấp nhận bạn bè => xong!!!\n')
 		print('\nHoàn thành 1 của nợ!!!\n')
-		s = random.radint(30,45)
+		s = random.randint(30,45)
 		print(f'\nChuyển FB sau {s}s..\n')
 		sleep(s)
+	print('Xong')
