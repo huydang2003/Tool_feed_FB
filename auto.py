@@ -236,7 +236,7 @@ class FB_tool(object):
 		data = res.json()
 		list_albums = data['albums']['data']
 		for albums in list_albums:
-			if albums['type'] == 'wall':
+			if albums['type'] == 'wall' or albums['type'] == 'mobile':
 				id_albums = albums['id']
 				break
 		url = f'https://graph.facebook.com/{id_albums}/photos'
@@ -254,7 +254,7 @@ def auto_comment_reaction(tool):
 	data = open('input/list_cmt.txt', 'r', encoding='utf8').read()
 	list_cmt = data.split('|')
 	sl = random.randint(7, 15)
-	print(f'[Tự động tương tác với {sl} người]')
+	print(f'\n[Tự động tương tác với {sl} người]')
 	cout = 0
 	list_story = []
 	list_story_old = []

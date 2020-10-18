@@ -1,0 +1,52 @@
+{
+    "id": "100006976664099",
+    "birthday": "06/20/1999",
+    "education": [
+        {
+            "school": {
+                "id": "159137167506565",
+                "name": "Đại Học Hải Phòng"
+            },
+            "type": "College",
+            "id": "2718717268370802"
+        },
+        {
+            "school": {
+                "id": "198807936897093",
+                "name": "THPT An Dương - Hải Phòng"
+            },
+            "type": "High School",
+            "id": "2718717225037473"
+        }
+    ],
+    "email": "yen_khanh@yahoo.com",
+    "first_name": "Yen",
+    "gender": "female",
+    "hometown": {
+        "id": "114668461883395",
+        "name": "Hải Phòng"
+    },
+    "last_name": "Nguyen",
+    "link": "https://www.facebook.com/profile.php?id=100006976664099",
+    "location": {
+        "id": "109177582440572",
+        "name": "An Toàn, Hải Phòng, Vietnam"
+    },
+    "locale": "vi_VN",
+    "name": "Yen Nguyen",
+    "published_timeline": true,
+    "timezone": 7,
+    "updated_time": "2020-10-03T00:32:39+0000",
+    "verified": true,
+    "work": [
+        {
+            "end_date": "0000-00",
+            "employer": {
+                "id": "159137167506565",
+                "name": "Đại Học Hải Phòng"
+            },
+            "start_date": "0000-00",
+            "id": "2718717318370797"
+        }
+    ]
+}
