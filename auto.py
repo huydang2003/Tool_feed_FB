@@ -320,6 +320,7 @@ def auto_send_friend_suggest(tool, fb_id):
 			tool.friend_request(cookie, fb_id, link)
 			print(f'\t>>>{cout}>>send: {id_friend}', end=' ')
 			cout+=1
+			if cout > sl: break
 			s = random.randint(1,5)
 			print(f'>>delay {s}s')
 			sleep(s)
