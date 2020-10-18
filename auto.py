@@ -339,8 +339,8 @@ if __name__ == '__main__':
 		list_tt = [1, 2, 3, 4]
 		random.shuffle(list_tt)
 		for x in list_tt:
-			# if x==1: auto_comment_reaction(tool)
-			# if x==2: auto_post_photos(tool)
+			if x==1: auto_comment_reaction(tool)
+			if x==2: auto_post_photos(tool)
 			if x==3: auto_send_friend_suggest(tool, fb_id)		
 		print('\nHoàn thành 1 của nợ!!!\n')
 		s = random.randint(30,45)
