@@ -261,9 +261,7 @@ def auto_comment_reaction(tool, fb_id):
 	list_story_old = []
 	list_tt = [1, 2]
 	link = 'https://mbasic.facebook.com/home.php'
-	while cout < sl:
-		cookie = tool.list_ct[fb_id]['cookie']
-		token = tool.list_ct[fb_id]['token']
+	while True:
 		while True:
 			if len(list_story)>0: break
 			list_story = tool.get_list_story(cookie, link)
@@ -273,22 +271,26 @@ def auto_comment_reaction(tool, fb_id):
 			info = tool.get_info_story(token, id_status)
 			name = info[0]
 			caption = info[1]
-			print(f'>>>bài viết:{name}|{caption}')
+			print(f'>>>bài viết {cout}:{name}|{caption}')
 			for x in list_tt:
-				reaction = random.choice(list_reaction)
-				content = f'Hi {name}!!!Chúc ngày mới tốt lành!!!\n{random.choice(list_cmt)}'
+				if vt==None: reaction = random.choice(list_reaction)
+				else: reaction = list_reaction[vt]
+				content = random.choice(list_cmt)
+				content = content.replace('#', name)
 				if x==1:
 					check = tool.reaction_story(cookie, token, id_status, reaction)
-					if check==1: print(f'\t>>>reaction: {reaction}')
+					if check==1: print(f'\t>>>reaction: {temp[reaction]}')
 					if check==2: print('\t>>>Block reaction!!!')
 				if x==2:
 					check = tool.comment_story(token, id_status, content)
 					if check==1: print(f'\t>>>comment: {content}')
 					if check==2: print('\t>>>Block comment!!!')
-				cout+=1
+			cout+=1
+			if cout>sl: return 0
 			s = random.randint(5, 10)
 			print(f'\t[wait {s}s]')
 			sleep(s)
+		list_story = []
 
 def auto_post_photos(tool, fb_id):
 	print('\n[Tự động đăng bài viết]')
