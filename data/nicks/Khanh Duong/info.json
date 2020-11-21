@@ -1,0 +1,67 @@
+{
+    "id": "100007779904790",
+    "birthday": "08/16/1990",
+    "education": [
+        {
+            "school": {
+                "id": "743811409002144",
+                "name": "Trường Đại Học Trà Vinh"
+            },
+            "type": "College",
+            "id": "431810021186712"
+        },
+        {
+            "school": {
+                "id": "266203120162492",
+                "name": "THPT Long Khánh Duyên Hải Trà Vinh"
+            },
+            "type": "High School",
+            "id": "732294540718632"
+        }
+    ],
+    "email": "duongkhanh336@yahoo.com",
+    "first_name": "Khanh",
+    "gender": "male",
+    "hometown": {
+        "id": "105469112820027",
+        "name": "Trà Vinh"
+    },
+    "last_name": "Duong",
+    "link": "https://www.facebook.com/profile.php?id=100007779904790",
+    "locale": "vi_VN",
+    "name": "Khanh Duong",
+    "published_timeline": true,
+    "relationship_status": "Độc thân",
+    "timezone": 7,
+    "updated_time": "2020-11-21T12:34:06+0000",
+    "verified": true,
+    "work": [
+        {
+            "end_date": "0000-00",
+            "employer": {
+                "id": "103998542969809",
+                "name": "Thái Nguyên"
+            },
+            "start_date": "2020-11-21",
+            "id": "421499762208141"
+        },
+        {
+            "end_date": "0000-00",
+            "employer": {
+                "id": "1899997850220816",
+                "name": "TikTok"
+            },
+            "start_date": "2020-11-21",
+            "id": "674139156633830"
+        },
+        {
+            "end_date": "0000-00",
+            "employer": {
+                "id": "106388046062960",
+                "name": "Hà Nội"
+            },
+            "start_date": "2020-11-21",
+            "id": "1107064626375781"
+        }
+    ]
+}
