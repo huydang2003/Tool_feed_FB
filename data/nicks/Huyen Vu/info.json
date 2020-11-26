@@ -1,0 +1,33 @@
+{
+    "id": "100011025332648",
+    "birthday": "02/11/2000",
+    "education": [
+        {
+            "school": {
+                "id": "288320098032830",
+                "name": "Trường Trung học phổ thông chuyên Hà Nội - Amsterdam"
+            },
+            "type": "High School",
+            "id": "103366300040881"
+        }
+    ],
+    "email": "vuhuyen61@yahoo.com",
+    "first_name": "Huyen",
+    "gender": "female",
+    "hometown": {
+        "id": "108458769184495",
+        "name": "Thành phố Hồ Chí Minh"
+    },
+    "last_name": "Vu",
+    "link": "https://www.facebook.com/profile.php?id=100011025332648",
+    "location": {
+        "id": "106916689340654",
+        "name": "Chí Hòa, Hồ Chí Minh, Vietnam"
+    },
+    "locale": "vi_VN",
+    "name": "Huyen Vu",
+    "published_timeline": true,
+    "timezone": 7,
+    "updated_time": "2020-11-26T17:17:30+0000",
+    "verified": true
+}

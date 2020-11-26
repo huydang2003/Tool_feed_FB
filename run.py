@@ -125,15 +125,17 @@ class Tool_feed_fb():
 			cookie = self.list_nick[vt]['cookie']
 			self.fb_mt.get_save_info(name, cookie)
 			self.fb_mt.show_info(name)
-			list_ac = [0,1,2,3]
-			random.shuffle(list_ac)
-			for ac in list_ac:
-				if ac == 0: self.auto_comment_reaction(cookie)
-				elif ac == 1: self.auto_post_photos(cookie)
-				elif ac == 2: self.auto_accept_friend_request(cookie)
-				elif ac == 3: self.auto_send_friend_suggest(cookie)
-				sleep(10)
+			
+			self.auto_comment_reaction(cookie)
+			sleep(10)
+			self.auto_post_photos(cookie)
+			sleep(10)
+			self.auto_accept_friend_request(cookie)
+			sleep(10)
+			self.auto_send_friend_suggest(cookie)
 			print(f"***XONG: {name}")
+			print("\n[CHUYỂN NICK ]")
+			sleep(10)
 
 	def run(self):
 		print("<><><><><><><><><><><>")

@@ -1,0 +1,52 @@
+{
+    "id": "100013306155546",
+    "birthday": "11/17/1993",
+    "education": [
+        {
+            "school": {
+                "id": "201864396641987",
+                "name": "Đại Học Khoa Học và Công Nghệ Hà Nội - USTH"
+            },
+            "type": "College",
+            "id": "394267311693374"
+        },
+        {
+            "school": {
+                "id": "103789649659423",
+                "name": "Hanoi – Amsterdam High School"
+            },
+            "type": "High School",
+            "id": "2665670713743730"
+        }
+    ],
+    "email": "phantran1998@yahoo.com",
+    "first_name": "Nguyen",
+    "gender": "male",
+    "hometown": {
+        "id": "106388046062960",
+        "name": "Hà Nội"
+    },
+    "last_name": "Lam",
+    "link": "https://www.facebook.com/profile.php?id=100013306155546",
+    "location": {
+        "id": "112932605398995",
+        "name": "Tiên Xá, Hai Hung, Vietnam"
+    },
+    "locale": "vi_VN",
+    "name": "Nguyen Lam",
+    "published_timeline": true,
+    "timezone": 7,
+    "updated_time": "2020-11-26T13:57:31+0000",
+    "verified": true,
+    "work": [
+        {
+            "end_date": "0000-00",
+            "employer": {
+                "id": "106388046062960",
+                "name": "Hà Nội"
+            },
+            "start_date": "0000-00",
+            "id": "760466241484017"
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+{
+    "id": "100006488614785",
+    "birthday": "01/06/1985",
+    "education": [
+        {
+            "school": {
+                "id": "123924724346933",
+                "name": "Trường ĐH Kinh tế TP. Hồ Chí Minh - UEH"
+            },
+            "type": "College",
+            "id": "433555414318504"
+        },
+        {
+            "school": {
+                "id": "103778429661035",
+                "name": "Lê Hồng Phong High School"
+            },
+            "type": "High School",
+            "id": "4542962509112438"
+        }
+    ],
+    "email": "hoangduyen1985@yahoo.com",
+    "first_name": "Hoang",
+    "gender": "female",
+    "hometown": {
+        "id": "108424279189115",
+        "name": "Thành phố New York"
+    },
+    "last_name": "Duyen",
+    "link": "https://www.facebook.com/profile.php?id=100006488614785",
+    "location": {
+        "id": "108458769184495",
+        "name": "Thành phố Hồ Chí Minh"
+    },
+    "locale": "vi_VN",
+    "name": "Hoang Duyen",
+    "published_timeline": true,
+    "timezone": 7,
+    "updated_time": "2020-11-26T11:50:27+0000",
+    "verified": true,
+    "work": [
+        {
+            "end_date": "0000-00",
+            "employer": {
+                "id": "106388046062960",
+                "name": "Hà Nội"
+            },
+            "start_date": "0000-00",
+            "id": "377489160192986"
+        }
+    ]
+}

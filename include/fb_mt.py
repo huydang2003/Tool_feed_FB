@@ -107,7 +107,7 @@ class fb_mt():
 		if 'error' in data: return False #Id lỗi
 		else:
 			if 'from' not in data: return False
-			if 'category' in data['from']: return False
+			#if 'category' in data['from']: return False
 			else:
 				if 'name' in data['from']:
 					title = data['from']['name']
