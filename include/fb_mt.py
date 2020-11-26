@@ -47,24 +47,31 @@ class fb_mt():
 		else: return True
 
 	def get_save_info(self, name, cookie):
+		path_data = f'data/nicks/{name}'
+		path_info = f'{path_data}/info.json'
+		path_friend= f'{path_data}/list_friend.json'
+		if not os.path.exists(path_data):
+			os.mkdir(path_data)
+			open(path_info, 'w').write('{}')
+			open(path_friend, 'w').write('[]')
+
 		token = self.get_token(cookie)
 		params = {'access_token': token}
 		url = 'https://graph.facebook.com/me?feed'
 		res = self.ses.get(url, params=params)
 		data = res.json()
+		
 		if 'error' not in data:
-			# try:
-				path_data = f'data/nicks/{name}'
-				if not os.path.exists(path_data): os.mkdir(path_data)
-				path_output = f'{path_data}/info.json'
-				self.save_file_json(path_output, data)
-				url = 'https://graph.facebook.com/me?fields=friends'
-				res = self.ses.get(url, params=params)
-				data = res.json()
+			self.save_file_json(path_info, data)
+			url = 'https://graph.facebook.com/me?fields=friends'
+			res = self.ses.get(url, params=params)
+			data = res.json()
+			if 'error' not in data:
 				data = data['friends']['data']
-				path_output = f'{path_data}/list_friend.json'
-				self.save_file_json(path_output, data)
-			# except: pass
+				self.save_file_json(path_friend, data)
+		else:
+			error_code = data['error']['code']
+			if error_code == 2500: return False		
 
 	def show_info(self, name):
 		path_index = f'data/nicks/{name}'
@@ -72,12 +79,14 @@ class fb_mt():
 			path_input = f'{path_index}/info.json'
 			data = self.load_file_json(path_input)
 			fb_info = {'name':'', 'id':0, 'username': '', 'birthday':0, 'email':None, 'friends':0}
-			fb_info['id'] = data['id']
-			fb_info['birthday'] = data['birthday']
-			fb_info['name'] = data['name']
-			fb_info['username'] = data['id']	
-			if 'email' in data: fb_info['email'] = data['email']
-			if 'username' in data: fb_info['username'] = data['username']
+			if data != {}:
+				fb_info['id'] = data['id']
+				fb_info['birthday'] = data['birthday']
+				fb_info['name'] = data['name']
+				fb_info['username'] = data['id']	
+				if 'email' in data: fb_info['email'] = data['email']
+				if 'username' in data: fb_info['username'] = data['username']
+
 			path_input = f'{path_index}/list_friend.json'
 			data = self.load_file_json(path_input)
 			fb_info['friends'] = len(data)
@@ -104,7 +113,9 @@ class fb_mt():
 		url = f'https://graph.facebook.com/{id_status}?fields=from, message'
 		res = self.ses.get(url, params=params)
 		data = res.json()
-		if 'error' in data: return False #Id lỗi
+		print(data)
+		if 'error' in data:
+			return False #Id lỗi
 		else:
 			if 'from' not in data: return False
 			#if 'category' in data['from']: return False

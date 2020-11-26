@@ -69,13 +69,15 @@ class Tool_feed_fb():
 
 		while True:
 			while True:
-				if len(list_story)>0: break
+				if len(list_story) > 0: break
 				list_story = self.fb_mt.get_list_story(cookie)
+
 			token = self.fb_mt.get_token(cookie)
 			for id_status in list_story:
 				if id_status in list_story_old: continue
 				list_story_old.append(id_status)
 				check = self.fb_mt.get_info_story(token, id_status)
+				print(check)
 				if check==False: continue
 				name = check[0]
 				caption = check[1]
@@ -123,9 +125,11 @@ class Tool_feed_fb():
 			vt=int(vt)
 			name = self.list_nick[vt]['name']
 			cookie = self.list_nick[vt]['cookie']
-			self.fb_mt.get_save_info(name, cookie)
+			check = self.fb_mt.get_save_info(name, cookie)
+			if check == False:
+				print('[TOKEN NOT USE]')
+				break
 			self.fb_mt.show_info(name)
-			
 			self.auto_comment_reaction(cookie)
 			sleep(10)
 			self.auto_post_photos(cookie)
